@@ -8,13 +8,17 @@
     "build": "tsup src/index.ts --format cjs --dts",
     "dev": "tsx src/index.ts",
     "start": "node dist/index.js",
+    "test": "tsx --test test/**/*.test.ts",
+    "check": "npm run build && npm test && npm pack --dry-run",
     "prepack": "node -e \"const fs=require('node:fs');const path=require('node:path');const target=path.join(process.cwd(),'README.md.bak');if(fs.existsSync(target)){fs.rmSync(target,{force:true});}\"",
+    "postpack": "node -e \"const fs=require('node:fs');const path=require('node:path');const pkg=require(path.join(process.cwd(),'package.json'));const tarball=`${pkg.name.replace(/^@/,'').replace(/\\//g,'-')}-${pkg.version}.tgz`;const target=path.join(process.cwd(),tarball);if(fs.existsSync(target)){fs.rmSync(target,{force:true});}\"",
     "prepublishOnly": "npm run build"
   },
   "files": [
     "dist",
     "templates",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "keywords": [
     "cli",

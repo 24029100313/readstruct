@@ -31,7 +31,7 @@ export async function scanDirectory(config: ReadstructConfig): Promise<TreeNode[
     throw new Error(`扫描目录不存在或不是文件夹：${config.rootDir}`);
   }
 
-  const rootName = path.basename(path.resolve(config.rootDir)) || config.rootDir;
+  const rootName = await resolveRootName(config.rootDir);
   const rootNode: TreeNode = {
     name: rootName,
     path: ".",
@@ -158,8 +158,27 @@ async function readGitignoreRules(rootDir: string): Promise<string[]> {
   }
 }
 
+async function resolveRootName(rootDir: string): Promise<string> {
+  const fallbackName = path.basename(path.resolve(rootDir)) || rootDir;
+
+  try {
+    const raw = await readFile(path.join(rootDir, "package.json"), "utf8");
+    const parsed = JSON.parse(stripBom(raw)) as { name?: unknown };
+
+    return typeof parsed.name === "string" && parsed.name.trim().length > 0
+      ? parsed.name.trim()
+      : fallbackName;
+  } catch {
+    return fallbackName;
+  }
+}
+
 function normalizeRelativePath(relativePath: string): string {
   return relativePath.replace(/\\/g, "/").replace(/\/$/, "");
+}
+
+function stripBom(value: string): string {
+  return value.charCodeAt(0) === 0xfeff ? value.slice(1) : value;
 }
 
 function getDepth(relativePath: string): number {

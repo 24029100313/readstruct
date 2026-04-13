@@ -10,6 +10,7 @@ export interface RenderContext {
   emoji: boolean;
   totalFiles: number;
   totalDirs: number;
+  generatedAt?: Date;
 }
 
 export async function renderStructure(
@@ -25,7 +26,7 @@ export async function renderStructure(
   const markdown = template({
     title,
     tree: new Handlebars.SafeString(treeString),
-    date: formatLocalDate(new Date()),
+    date: formatLocalDate(context.generatedAt ?? new Date()),
     totalFiles: context.totalFiles,
     totalDirs: context.totalDirs,
     emojiEnabled: context.emoji,

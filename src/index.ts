@@ -2,7 +2,7 @@
 
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import { Command } from "commander";
+import { Command, CommanderError } from "commander";
 
 import { loadConfig, type CliOptions } from "./config";
 import { injectIntoReadme } from "./injector";
@@ -24,6 +24,7 @@ export async function main(argv: string[] = process.argv): Promise<void> {
     .name("readstruct")
     .description("Auto-generate file structure section for your README")
     .version(getPackageVersion())
+    .exitOverride()
     .showHelpAfterError();
 
   program
@@ -125,9 +126,21 @@ function getPackageVersion(): string {
 }
 
 if (require.main === module) {
-  main().catch((error: unknown) => {
-    const message = error instanceof Error ? error.message : String(error);
-    console.error(message);
-    process.exitCode = 1;
-  });
+  main().catch(handleCliError);
+}
+
+function handleCliError(error: unknown): void {
+  if (error instanceof CommanderError) {
+    process.exitCode = error.exitCode;
+
+    if (error.code !== "commander.helpDisplayed") {
+      console.error(error.message);
+    }
+
+    return;
+  }
+
+  const message = error instanceof Error ? error.message : String(error);
+  console.error(message);
+  process.exitCode = 1;
 }

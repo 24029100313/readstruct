@@ -1,5 +1,6 @@
 node_modules/
 dist/
 *.bak
+*.tgz
 .DS_Store
 .env

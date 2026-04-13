@@ -1,5 +1,7 @@
 # readstruct
 
+[![CI](https://github.com/24029100313/readstruct/actions/workflows/ci.yml/badge.svg)](https://github.com/24029100313/readstruct/actions/workflows/ci.yml)
+
 一个用来生成 README 文件结构区块的命令行工具。
 
 适合想把项目目录结构稳定写进文档、又不想手工维护树形列表的场景。
@@ -104,6 +106,34 @@ Thumbs.db
 &lt;!-- READSTRUCT:END --&gt;
 ~~~~
 
+## 开发与测试
+
+常用命令：
+
+```bash
+npm run build
+npm test
+npm run check
+```
+
+- `npm run build`：构建 CLI 到 `dist/`
+- `npm test`：运行 `node:test` 测试集
+- `npm run check`：串联构建、测试和 `npm pack --dry-run`
+
+## 发布前检查
+
+发布前建议至少确认这几项：
+
+1. `npm run check` 通过。
+2. README 中的仓库链接、示例和版本信息已经更新。
+3. 已完成 `npm login`，并确认 npm 包名可用。
+
+发布命令：
+
+```bash
+npm publish --access public
+```
+
 ## 在当前仓库中的生成效果
 
 下面这段内容就是 `readstruct` 在当前仓库里实际运行后的结果：
@@ -111,11 +141,14 @@ Thumbs.db
 <!-- READSTRUCT:START -->
 ## 📁 Project Structure
 
-> 由 [readstruct](https://github.com/24029100313/readstruct) 自动生成于 2026-04-13
-> 共 3 个文件夹，12 个文件
+> 由 [readstruct](https://github.com/24029100313/readstruct) 自动生成于 2026-04-14
+> 共 6 个文件夹，21 个文件
 
 ```text
 📁 readstruct/
+├── 📁 .github/
+│   └── 📁 workflows/
+│       └── 📄 ci.yml
 ├── 📁 src/
 │   ├── 📄 config.ts
 │   ├── 📄 index.ts
@@ -124,13 +157,21 @@ Thumbs.db
 │   └── 📄 scanner.ts
 ├── 📁 templates/
 │   └── 📄 default.hbs
+├── 📁 test/
+│   ├── 📄 cli.test.ts
+│   ├── 📄 config.test.ts
+│   ├── 📄 helpers.ts
+│   ├── 📄 injector.test.ts
+│   ├── 📄 renderer.test.ts
+│   └── 📄 scanner.test.ts
+├── 📄 .gitattributes
 ├── 📄 .gitignore
 ├── 📄 .npmignore
+├── 📄 LICENSE
 ├── ⚙️ package-lock.json
 ├── ⚙️ package.json
 ├── 📝 README.md
 └── ⚙️ tsconfig.json
 ```
 <!-- READSTRUCT:END -->
-
 
