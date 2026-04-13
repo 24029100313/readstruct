@@ -1,0 +1,56 @@
+{
+  "name": "readstruct",
+  "version": "0.1.0",
+  "description": "Auto-generate file structure section for your README",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs --dts",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "prepack": "node -e \"const fs=require('node:fs');const path=require('node:path');const target=path.join(process.cwd(),'README.md.bak');if(fs.existsSync(target)){fs.rmSync(target,{force:true});}\"",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist",
+    "templates",
+    "README.md"
+  ],
+  "keywords": [
+    "cli",
+    "readme",
+    "markdown",
+    "tree",
+    "directory-structure"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/24029100313/readstruct.git"
+  },
+  "homepage": "https://github.com/24029100313/readstruct#readme",
+  "bugs": {
+    "url": "https://github.com/24029100313/readstruct/issues"
+  },
+  "bin": {
+    "readstruct": "./dist/index.js"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "commander": "^14.0.3",
+    "fast-glob": "^3.3.3",
+    "handlebars": "^4.7.9",
+    "ignore": "^7.0.5"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2"
+  }
+}
